@@ -39,8 +39,15 @@ Commit your code regularly and use descriptive messages. This helps both you (in
 Demonstrate your understanding of this Sprint's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your Team Lead.
 
 - [ ] Mention two parts of Express that you learned about this week.
+        
+        -Adding middleware through dependency packages or creating your own.  
+
+        -Express helps abstract a lot of the complicated http request and networking.  
+
 
 - [ ] Describe Middleware?
+
+        -Middleware is any peice of code that sits in between a request usually for the purpose of providing feedback to the client or debugger.  
 
 - [ ] Describe a Resource?
 
