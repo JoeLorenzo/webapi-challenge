@@ -33,18 +33,16 @@ server.use((err, req, res, next) => {
     res.status(500).json({ error, message: "Opps something went wrong, it's not you, it me." })
 })
 
-// This defines a 404 error 
-server.use((req, res) => {
-    res.status(404).json({ message: "path not found" });
-  });
 
-  
 // This verifies that API is running on our root path
 server.get("/", (req, res) => {
     res.status(200).json({ status: "The server is running, better go catch it!!!" });
   });
 
-
+// This defines a 404 error 
+server.use((req, res) => {
+    res.status(404).json({ message: "path not found" });
+  });
 
 module.exports = server;
 
