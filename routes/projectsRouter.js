@@ -16,8 +16,20 @@ router.get("/projects", (req, res) => {
 })
 
 // This route get a specfic project by id
-router.get("/projects/:projectId", (req, res) => {
-    
+router.get("/project/:projectId", (req, res) => {
+    const { projectId } = req.params
+    if (projectId) {
+        console.log("projectId:",projectId)
+        projects.get(projectId)
+        .then(project => {
+            if (project) {
+                res.status(200).json(project)
+            }
+            else {
+                res.status(404).json({error:"project not found"})
+            }
+        })
+    }
 })
 
 
