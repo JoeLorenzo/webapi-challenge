@@ -1,7 +1,8 @@
 const express = require("express")
-
+const projectsRouter = require("./routes/projectsRouter")
 const server = express()
 
+server.use("/api", projectsRouter)
 server.get("/", (req, res) => {
     res.status(200).send("Hello World, from the root path")
 })
