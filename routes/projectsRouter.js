@@ -33,6 +33,7 @@ router.post("/projects", (req, res) => {
    }
 })
 
+
 // This route get a specfic project by id
 router.get("/project/:projectId", (req, res) => {
     const { projectId } = req.params
@@ -47,8 +48,71 @@ router.get("/project/:projectId", (req, res) => {
                 res.status(404).json({error:"project not found"})
             }
         })
+        .catch(err =>{
+            console.log(err)
+            res.status(500).json({error:"server error, could not retrieve project"})
+        })
+    }
+    else {
+        res.status(400).json({error:"invalid id format"})
     }
 })
 
+// this route updates a project 
+router.put("/project/:projectId", (req, res) => {
+    const { projectId } = req.params
+    console.log(projectId)
+    if (projectId) {
+        projects.get(projectId)
+        .then(project => {
+            if (project) {
+                console.log(project.id)
+                projects.update(project.id, req.body)
+                .then(project => {
+                    res.status(201).json(project)
+                })
+            }
+            else {
+                res.status(404).json({error:"project not found"})
+            }
+        })
+        .catch(err =>{
+            console.log(err)
+            res.status(500).json({error:"server error, could not retrieve existing project"})
+        })
+    }
+    else {
+        res.status(400).json({error:"invalid id format"})
+    }
+})
+
+// this route deletes a project by id
+router.delete("/project/:projectId", (req, res) => {
+    const { projectId } = req.params
+    if (projectId) {
+        console.log("projectId:",projectId)
+        projects.get(projectId)
+        .then(project => {
+            if (project) {
+                projects.remove(projectId)
+                .then(res.status(204).json({message:"project deleted"}))
+                .catch(err =>{
+                    console.log(err)
+                    res.status(500).json({error:"server error, unable to delete project"})
+                })
+            }
+            else {
+                res.status(404).json({error:"project not found"})
+            }
+        })
+        .catch(err =>{
+            console.log(err)
+            res.status(500).json({error:"server error, could not retrieve project"})
+        })
+    }
+    else {
+        res.status(400).json({error:"invalid id format"})
+    }
+})
 
 module.exports = router 
