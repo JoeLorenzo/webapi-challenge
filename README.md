@@ -39,14 +39,25 @@ Commit your code regularly and use descriptive messages. This helps both you (in
 Demonstrate your understanding of this Sprint's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your Team Lead.
 
 - [ ] Mention two parts of Express that you learned about this week.
+    
+    Express abstracts the more complicated http requests
+    Uses Node runtime so code is written in vanilla javascript. 
 
 - [ ] Describe Middleware?
 
+    Can be used to change the request or response.
+
 - [ ] Describe a Resource?
+    
+    Resources are running services that are specific to an enviroment.
 
 - [ ] What can the API return to help clients know if a request was successful?
+   
+    Stutus codes.
 
 - [ ] How can we partition our application into sub-applications?
+    
+    Using routers to split up our routes into specific files.
 
 ## Minimum Viable Product
 
@@ -70,7 +81,7 @@ The description of the structure and extra information about each _resource_ sto
 | ----------- | --------- | --------------------------------------------------------------------------- |
 | id          | number    | no need to provide it when creating projects, the database will generate it |
 | name        | string    | required.                                                                   |
-| description | string    | required.                                                                   |
+<!-- | description | string    | required.                                                                   | -->
 | completed   | boolean   | used to indicate if the project has been completed, not required            |
 
 #### Actions
@@ -93,7 +104,7 @@ The `/data/helpers` folder includes files you can use to manage the persistence 
 - `insert()`: calling insert passing it a resource object will add it to the database and return the newly created resource.
 - `update()`: accepts two arguments, the first is the `id` of the resource to update, and the second is an object with the `changes` to apply. It returns the updated resource. If a resource with the provided `id` is not found, the method returns `null`.
 - `remove()`: the remove method accepts an `id` as it's first parameter and, upon successfully deleting the resource from the database, returns the number of records deleted.
-
+u
 The `projectModel.js` helper includes an extra method called `getProjectActions()` that takes a _project id_ as it's only argument and returns a list of all the _actions_ for the _project_.
 
 We have provided test data for all the resources.

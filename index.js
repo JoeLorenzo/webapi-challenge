@@ -1,14 +1,15 @@
-/*
-play this: https://www.youtube.com/watch?v=d-diB65scQU
+const express = require("express")
+const projectsRouter = require("./routes/projectsRouter")
+const actionsRouter = require("./routes/actionsRouter")
+const server = express()
 
-Sing along:
+server.use("/api", actionsRouter)
+server.use("/api", projectsRouter)
 
-here's a little code I wrote, please read the README word for word, don't worry, you got this
-in every task there may be trouble, but if you worry you make it double, don't worry, you got this
-ain't got no sense of what is REST? just concentrate on learning Express, don't worry, you got this
-your file is getting way too big, bring a Router and make it thin, don't worry, be crafty
-there is no data on that route, just write some code, you'll sort it out… don't worry, just API…
-I need this code, just don't know where, perhaps should make some middleware, don't worry, just API
+server.get("/", (req, res) => {
+    res.status(200).send("Hello World, from the root path")
+})
+host = "127.0.0.1"
+port = 8080
 
-Go code!
-*/
+server.listen(port, ()=> console.log(`server running on ${host}:${port}, better go catch it...`)) 
