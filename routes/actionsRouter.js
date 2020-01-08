@@ -61,16 +61,23 @@ router.get("/project/:project_id/:id", (req, res) => {
 })
 
 // This route removes an action by id and project id
-router.get("/project/:project_id/:id", (req, res) => {
+router.delete("/project/:project_id/:id", (req, res) => {
     const { project_id, id } = req.params
-    console.log(project_id, id)
     if (project_id) {
         projects.get(project_id)
         .then(project => {
             const action = project.actions.find(actions => actions.id == id)
             if (action) {
-                  res.status(200).json(action)
-               }
+                actions.remove(id)
+                .then(action => {
+                    res.status(204).json(action)
+                })
+                .catch(err =>{
+                    console.log(err)
+                    res.status(500).json({error:"unable to remove action"})
+                })
+            }
+
             else {
                     res.status(404).json({error:"action id not found"})
                 }
@@ -126,7 +133,7 @@ router.put("/project/:project_id/:id", (req, res) => {
             if (project) {
                 actions.update(id, updatePost)
                 .then(actions => {
-                  res.status(200).json(actions)
+                  res.status(201).json(actions)
                 })
                 .catch(err => {
                     console.log(err)
