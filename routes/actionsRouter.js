@@ -34,6 +34,38 @@ router.use(express.json())
         res.status(400).json({error:"invalid id format"})
     }
 })
+
+// this route posts an action given a project id
+router.post("/project/:project_id/post-action", (req, res) => {
+    const { project_id } = req.params
+    const newAction = {project_id, ...req.body}
+    console.log(newAction)
+    if (project_id) {
+        projects.get(project_id)
+        .then(project => {
+            if (project) {
+                actions.insert(newAction)
+                .then(actions => {
+                  res.status(200).json(actions)
+                })
+                .catch(err => {
+                    console.log(err)
+                  res.status(500).json({error:"server error, unable to post actions"})
+                })
+                }
+            else {
+                    res.status(404).json({error:"project not found"})
+                }
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({error:"server error, could not retrieve project"})
+        })
+        }
+    else {
+        res.status(400).json({error:"invalid id format"})
+        }
+})
     
 
 // // This route post's a new project
