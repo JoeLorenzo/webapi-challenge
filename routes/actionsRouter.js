@@ -35,6 +35,30 @@ router.use(express.json())
     }
 })
 
+// This route gets an action by id and project id
+router.get("/project/:project_id/:id", (req, res) => {
+    const { project_id, id } = req.params
+    console.log(project_id, id)
+    if (project_id) {
+        projects.get(project_id)
+        .then(project => {
+            const action = project.actions.find(actions => actions.id == id)
+            if (action) {
+                  res.status(200).json(action)
+               }
+            else {
+                    res.status(404).json({error:"action id not found"})
+                }
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({error:"server error, could not retrieve project"})
+        })
+        }
+    else {
+        res.status(400).json({error:"invalid id format"})
+    }
+})
 // this route posts an action given a project id
 router.post("/project/:project_id/post-action", (req, res) => {
     const { project_id } = req.params
@@ -67,105 +91,38 @@ router.post("/project/:project_id/post-action", (req, res) => {
         }
 })
     
-
-// // This route post's a new project
-// router.post("/projects", (req, res) => {
-//     const { name, description } = req.body
-//     if (name && description){
-//         projects.insert(req.body)
-//         .then(project => { 
-//             res.status(201).json(project)
-//         })
-//         .catch(err => {
-//             console.log(err)
-//             res.status(500).json({err:"project could not be created"})
-//         })
-//     }
-//    else {
-//     res.status(400).json({error:"missing name or description"})
-//    }
-// })
-
-
-// // This route get a specfic project by id
-// router.get("/project/:projectId", (req, res) => {
-//     const { projectId } = req.params
-//     if (projectId) {
-//         console.log("projectId:",projectId)
-//         projects.get(projectId)
-//         .then(project => {
-//             if (project) {
-//                 res.status(200).json(project)
-//             }
-//             else {
-//                 res.status(404).json({error:"project not found"})
-//             }
-//         })
-//         .catch(err =>{
-//             console.log(err)
-//             res.status(500).json({error:"server error, could not retrieve project"})
-//         })
-//     }
-//     else {
-//         res.status(400).json({error:"invalid id format"})
-//     }
-// })
-
-// // this route updates a project 
-// router.put("/project/:projectId", (req, res) => {
-//     const { projectId } = req.params
-//     console.log(projectId)
-//     if (projectId) {
-//         projects.get(projectId)
-//         .then(project => {
-//             if (project) {
-//                 console.log(project.id)
-//                 projects.update(project.id, req.body)
-//                 .then(project => {
-//                     res.status(201).json(project)
-//                 })
-//             }
-//             else {
-//                 res.status(404).json({error:"project not found"})
-//             }
-//         })
-//         .catch(err =>{
-//             console.log(err)
-//             res.status(500).json({error:"server error, could not retrieve existing project"})
-//         })
-//     }
-//     else {
-//         res.status(400).json({error:"invalid id format"})
-//     }
-// })
-
-// // this route deletes a project by id
-// router.delete("/project/:projectId", (req, res) => {
-//     const { projectId } = req.params
-//     if (projectId) {
-//         console.log("projectId:",projectId)
-//         projects.get(projectId)
-//         .then(project => {
-//             if (project) {
-//                 projects.remove(projectId)
-//                 .then(res.status(204).json({message:"project deleted"}))
-//                 .catch(err =>{
-//                     console.log(err)
-//                     res.status(500).json({error:"server error, unable to delete project"})
-//                 })
-//             }
-//             else {
-//                 res.status(404).json({error:"project not found"})
-//             }
-//         })
-//         .catch(err =>{
-//             console.log(err)
-//             res.status(500).json({error:"server error, could not retrieve project"})
-//         })
-//     }
-//     else {
-//         res.status(400).json({error:"invalid id format"})
-//     }
-// })
+router.put("/project/:project_id/:id", (req, res) => {
+    const { project_id, id } = req.params
+    const updatePost = {id, project_id, ...req.body}
+    console.log (updatePost)
+    if (project_id) {
+        projects.get(project_id)
+        .then(project => {
+            console.log("put project id",project)
+            if (project) {
+                console.log("from the if",project)
+                console.log(updatePost)
+                actions.update(updatePost)
+                .then(actions => {
+                  res.status(200).json(actions)
+                })
+                .catch(err => {
+                    console.log(err)
+                  res.status(500).json({error:"server error, unable to post actions"})
+                })
+                }
+            else {
+                    res.status(404).json({error:"project not found"})
+                }
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({error:"server error, could not retrieve project"})
+        })
+        }
+    else {
+        res.status(400).json({error:"invalid id format"})
+        }
+})
 
 module.exports = router 
